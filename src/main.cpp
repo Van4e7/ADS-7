@@ -107,15 +107,15 @@ int main() {
     } else {
         cerr << "Unable to open time_data.txt" << endl;
     }
-    string gnuplot_script = R "(
+    string gnuplot_script = R"(
     # Plotting script for operation counts
     set terminal png size 800,600
     set output "result/plot-1.png"
     set title "Operation Counts vs. Train Length"
     set xlabel "Train Length (n)"
     set ylabel "Average Operation Count"
-    plot "op_data.txt" using 1:2 with linespoints title "All Lights Off", \
-         "op_data.txt" using 1:3 with linespoints title "All Lights On", \
+    plot "op_data.txt" using 1:2 with linespoints title "All Lights Off", 
+         "op_data.txt" using 1:3 with linespoints title "All Lights On", 
          "op_data.txt" using 1:4 with linespoints title "Random Lights"
     # Plotting script for execution time
     set terminal png size 800,600
@@ -123,8 +123,8 @@ int main() {
     set title "Execution Time vs. Train Length"
     set xlabel "Train Length (n)"
     set ylabel "Average Execution Time (microseconds)"
-    plot "time_data.txt" using 1:2 with linespoints title "All Lights Off", \
-         "time_data.txt" using 1:3 with linespoints title "All Lights On", \
+    plot "time_data.txt" using 1:2 with linespoints title "All Lights Off", 
+         "time_data.txt" using 1:3 with linespoints title "All Lights On", 
          "time_data.txt" using 1:4 with linespoints title "Random Lights"
     )";
     ofstream gnuplot_commands("gnuplot_script.gp");
