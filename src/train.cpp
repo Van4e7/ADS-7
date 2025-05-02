@@ -3,107 +3,63 @@
 
 Train::Train() : countOp(0), first(nullptr) {}
 Train::~Train() {
-  if (first) {
-    Car* current = first->next;
-    while (current != first) {
-      Car* next = current->next;
-      delete current;
-      current = next;
+    if (first) {
+        Car* current = first;
+        Car* next;
+        do {
+            next = current->next;
+            delete current;
+            current = next;
+        } while (current != first);
     }
-    delete first;
-    first = nullptr;
-  }
 }
 
 void Train::addCar(bool light) {
-  Car* newCar = new Car;
-  newCar->light = light;
+    Car* newCar = new Car{ light, nullptr, nullptr };
 
-  if (!first) {
-    first = newCar;
-    first->next = first;
-    first->prev = first;
-  } else {
-    Car* last = first->prev;
-    last->next = newCar;
-    newCar->prev = last;
-    newCar->next = first;
-    first->prev = newCar;
-  }
+    if (!first) {
+        first = newCar;
+        first->next = first;
+        first->prev = first;
+    }
+    else {
+        Car* last = first->prev;
+        last->next = newCar;
+        newCar->prev = last;
+        newCar->next = first;
+        first->prev = newCar;
+    }
 }
 
 int Train::getLength() {
   if (!first) return 0;
-
-  int length = 0;
+  countOp = 0;
   Car* current = first;
-  do {
-    length++;
+    bool initialLight = current->light;
+    while (current->light == initialLight) {
+        current = current->next;
+        countOp++;
+        if (current == first) {
+            current->light = !initialLight;
+            countOp++;
+            break;
+        }
+   }
+  Car* start = current;
+    int length = 1;
     current = current->next;
-    countOp++; 
-  } while (current != first);
-
-  return length;
+    countOp++;
+    while (current != start) {
+        length++;
+        current = current->next;
+        countOp++;
+    }
+    if (initialLight != first->light) {
+        first->light = initialLight;
+        countOp++;
+    }
+    return length;
 }
 
 int Train::getOpCount() { return countOp; }
 void Train::resetOpCount() { countOp = 0; }
-void Train::setAllLightsOff() {
-  if (!first) return;
-
-  Car* current = first;
-  do {
-    current->light = false;
-    current = current->next;
-  } while (current != first);
-}
-
-void Train::setAllLightsOn() {
-  if (!first) return;
-
-  Car* current = first;
-  do {
-    current->light = true;
-    current = current->next;
-  } while (current != first);
-}
-
-void Train::setRandomLights() {
-  if (!first) return;
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_int_distribution<> distrib(0, 1);
-
-  Car* current = first;
-  do {
-    current->light = (distrib(gen) == 1);
-    current = current->next;
-  } while (current != first);
-}
-
-void Train::moveNext() {
-    if (first) {
-        first = first->next;
-        countOp++;
-    }
-}
-
-void Train::movePrev() {
-    if (first) {
-        first = first->prev;
-        countOp++;
-    }
-}
-
-bool Train::getLight() {
-    if (first) {
-        return first->light;
-    }
-    return false; 
-}
-
-void Train::toggleLight() {
-    if (first) {
-        first->light = !first->light;
-    }
-}
