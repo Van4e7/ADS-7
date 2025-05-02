@@ -107,7 +107,7 @@ int main() {
     } else {
         cerr << "Unable to open time_data.txt" << endl;
     }
-    string gnuplot_script = R"(
+    string gnuplot_script = R "(
     # Plotting script for operation counts
     set terminal png size 800,600
     set output "result/plot-1.png"
