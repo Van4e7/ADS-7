@@ -21,8 +21,7 @@ void Train::addCar(bool light) {
         first = newCar;
         first->next = first;
         first->prev = first;
-    }
-    else {
+    } else {
         Car* last = first->prev;
         last->next = newCar;
         newCar->prev = last;
@@ -53,6 +52,6 @@ int Train::getLength() {
     }
   }
 }
-    
+
 int Train::getOpCount() { return countOp; }
 void Train::resetOpCount() { countOp = 0; }
