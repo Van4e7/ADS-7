@@ -35,9 +35,9 @@ int Train::getLength() {
     countOp = 0;
     Car* current = first;
     bool initialLight = current->light;
-    int length = 1;
     bool allSame = true;
     do {
+        int length = 1;
         if (current->light != initialLight) {
             allSame = false;
         }
